@@ -10,12 +10,14 @@ import {
   LogOut,
   Menu,
   X,
+  Settings,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/vehicles", label: "Manage Vehicles", icon: Car },
   { href: "/admin/vehicles/new", label: "Add Vehicle", icon: PlusCircle },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
 export default function AdminSidebar() {

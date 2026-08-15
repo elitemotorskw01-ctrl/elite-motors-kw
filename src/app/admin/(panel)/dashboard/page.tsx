@@ -1,19 +1,40 @@
 import { prisma } from "@/lib/prisma";
-import { Car, CheckCircle, Star, ShoppingCart } from "lucide-react";
+import { Car, CheckCircle, Star, ShoppingCart, Eye, Users, TrendingUp, Clock } from "lucide-react";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  const [total, active, sold, featured] = await Promise.all([
-    prisma.vehicle.count(),
-    prisma.vehicle.count({ where: { status: "active" } }),
-    prisma.vehicle.count({ where: { isSold: true } }),
-    prisma.vehicle.count({ where: { isFeatured: true } }),
-  ]);
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const weekStart = new Date(todayStart);
+  weekStart.setDate(weekStart.getDate() - 7);
+  const monthStart = new Date(todayStart);
+  monthStart.setDate(monthStart.getDate() - 30);
 
-  const stats = [
+  const [total, active, sold, featured, viewsToday, viewsWeek, viewsMonth, viewsAll] =
+    await Promise.all([
+      prisma.vehicle.count(),
+      prisma.vehicle.count({ where: { status: "active" } }),
+      prisma.vehicle.count({ where: { isSold: true } }),
+      prisma.vehicle.count({ where: { isFeatured: true } }),
+      prisma.pageView.count({ where: { createdAt: { gte: todayStart } } }),
+      prisma.pageView.count({ where: { createdAt: { gte: weekStart } } }),
+      prisma.pageView.count({ where: { createdAt: { gte: monthStart } } }),
+      prisma.pageView.count(),
+    ]);
+
+  const vehicleStats = [
     { label: "Total Vehicles", value: total, icon: Car },
     { label: "Active Listings", value: active, icon: CheckCircle },
     { label: "Sold Vehicles", value: sold, icon: ShoppingCart },
     { label: "Featured Vehicles", value: featured, icon: Star },
+  ];
+
+  const visitorStats = [
+    { label: "Today", value: viewsToday, icon: Clock },
+    { label: "Last 7 Days", value: viewsWeek, icon: TrendingUp },
+    { label: "Last 30 Days", value: viewsMonth, icon: Users },
+    { label: "All Time", value: viewsAll, icon: Eye },
   ];
 
   return (
@@ -25,9 +46,9 @@ export default async function AdminDashboardPage() {
         </p>
       </div>
 
-      {/* Stats */}
+      {/* Vehicle Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-        {stats.map(({ label, value, icon: Icon }) => (
+        {vehicleStats.map(({ label, value, icon: Icon }) => (
           <div
             key={label}
             className="bg-surface-card border border-surface-border rounded-xl p-5"
@@ -41,6 +62,27 @@ export default async function AdminDashboardPage() {
             <p className="text-3xl font-bold text-gold">{value}</p>
           </div>
         ))}
+      </div>
+
+      {/* Visitor Stats */}
+      <div className="mb-8">
+        <h2 className="text-lg font-bold text-white mb-4">Website Visitors</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {visitorStats.map(({ label, value, icon: Icon }) => (
+            <div
+              key={label}
+              className="bg-surface-card border border-surface-border rounded-xl p-5"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-text-secondary text-sm">{label}</span>
+                <div className="w-9 h-9 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                  <Icon size={18} className="text-emerald-400" />
+                </div>
+              </div>
+              <p className="text-3xl font-bold text-emerald-400">{value}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Quick Actions */}

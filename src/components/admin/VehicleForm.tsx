@@ -148,8 +148,8 @@ export default function VehicleForm({
       }
     }
 
-    if (data.images.length + fileArr.length > 10) {
-      toast.error("Maximum 10 images allowed.");
+    if (data.images.length + fileArr.length > 15) {
+      toast.error("Maximum 15 images allowed.");
       return;
     }
 
@@ -559,7 +559,7 @@ export default function VehicleForm({
       {/* Images */}
       <section>
         <h2 className="text-lg font-bold text-white mb-4">
-          Images * <span className="text-text-secondary text-sm font-normal">({data.images.length}/10)</span>
+          Images * <span className="text-text-secondary text-sm font-normal">({data.images.length}/15)</span>
         </h2>
         {errors.images && (
           <p className="text-red-400 text-xs mb-3">{errors.images}</p>
@@ -593,7 +593,7 @@ export default function VehicleForm({
             Drag & drop images here or click to upload
           </p>
           <p className="text-text-secondary text-xs">
-            JPG, PNG, WebP — Max 5MB per image — Max 10 images
+            JPG, PNG, WebP — Max 5MB per image — Max 15 images
           </p>
         </div>
 
@@ -671,7 +671,7 @@ export default function VehicleForm({
               ))}
 
               {/* Add more button */}
-              {data.images.length < 10 && (
+              {data.images.length < 15 && (
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}

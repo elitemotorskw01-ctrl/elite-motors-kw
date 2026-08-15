@@ -39,3 +39,9 @@ model Admin {
   password  String
   createdAt DateTime @default(now())
 }
+
+model PageView {
+  id        Int      @id @default(autoincrement())
+  path      String
+  createdAt DateTime @default(now())
+}

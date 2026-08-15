@@ -7,7 +7,7 @@ import { verifyAdmin } from "@/lib/auth";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 const MAX_SIZE = 5 * 1024 * 1024;
-const MAX_FILES = 10;
+const MAX_FILES = 15;
 const MAX_WIDTH = 1200;
 const THUMB_WIDTH = 400;
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "vehicles");

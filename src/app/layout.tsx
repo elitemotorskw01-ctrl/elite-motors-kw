@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import PageViewTracker from "@/components/PageViewTracker";
 import "./globals.css";
 
 const inter = Inter({
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${ibmPlexArabic.variable} font-sans antialiased bg-black text-text-primary`}
       >
+        <PageViewTracker />
         {children}
         <Toaster
           position="top-center"
