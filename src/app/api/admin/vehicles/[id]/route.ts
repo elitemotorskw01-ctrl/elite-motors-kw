@@ -36,6 +36,7 @@ export async function PUT(
         description: body.description || "",
         features: (body.features || []).join(","),
         images: JSON.stringify(body.images || []),
+        isNegotiable: body.isNegotiable || false,
         isFeatured: body.isFeatured || false,
       },
     });

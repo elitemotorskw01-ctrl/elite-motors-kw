@@ -69,9 +69,16 @@ function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
             <span>{vehicle.transmission}</span>
           </div>
           <div className="flex items-center justify-between">
-            <p className="text-gold font-bold text-lg">
-              {formatPrice(vehicle.price)} {tCommon("currency")}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-gold font-bold text-lg">
+                {formatPrice(vehicle.price)} {tCommon("currency")}
+              </p>
+              {vehicle.isNegotiable && (
+                <span className="text-[10px] font-medium bg-gold/15 text-gold px-1.5 py-0.5 rounded">
+                  {tCommon("negotiable")}
+                </span>
+              )}
+            </div>
             <span className="text-xs text-text-secondary group-hover:text-gold transition-colors">
               {t("viewDetails")}
             </span>

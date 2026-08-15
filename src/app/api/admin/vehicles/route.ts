@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
         description: body.description || "",
         features: (body.features || []).join(","),
         images: JSON.stringify(images),
+        isNegotiable: body.isNegotiable || false,
         isFeatured: body.isFeatured || false,
       },
     });

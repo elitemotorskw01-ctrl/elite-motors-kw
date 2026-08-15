@@ -125,7 +125,12 @@ function SimilarVehicleCard({
             <span className="w-1 h-1 rounded-full bg-surface-border" />
             <span>{vehicle.mileage.toLocaleString()} {tCommon("km")}</span>
           </div>
-          <p className="text-gold font-bold">{formatPrice(vehicle.price)} {tCommon("currency")}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-gold font-bold">{formatPrice(vehicle.price)} {tCommon("currency")}</p>
+            {vehicle.isNegotiable && (
+              <span className="text-[10px] font-medium bg-gold/15 text-gold px-1.5 py-0.5 rounded">{tCommon("negotiable")}</span>
+            )}
+          </div>
         </div>
       </a>
     </div>
@@ -248,9 +253,16 @@ export default function VehicleDetailClient({
               <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
                 {vehicle.title}
               </h1>
-              <p className="text-gold text-2xl md:text-3xl font-bold mb-6">
-                {formatPrice(vehicle.price)} {tCommon("currency")}
-              </p>
+              <div className="flex items-center gap-3 mb-6">
+                <p className="text-gold text-2xl md:text-3xl font-bold">
+                  {formatPrice(vehicle.price)} {tCommon("currency")}
+                </p>
+                {vehicle.isNegotiable && (
+                  <span className="text-xs font-medium bg-gold/15 text-gold px-2 py-1 rounded-lg">
+                    {tCommon("negotiable")}
+                  </span>
+                )}
+              </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
                 <div className="flex items-center gap-3 p-3 bg-surface-card border border-surface-border rounded-lg">

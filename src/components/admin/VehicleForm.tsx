@@ -42,6 +42,7 @@ type VehicleData = {
   description: string;
   features: string[];
   images: string[];
+  isNegotiable: boolean;
   isFeatured: boolean;
 };
 
@@ -63,6 +64,7 @@ const DEFAULT_DATA: VehicleData = {
   description: "",
   features: [],
   images: [],
+  isNegotiable: false,
   isFeatured: false,
 };
 
@@ -403,8 +405,16 @@ export default function VehicleForm({
               className={inputClass}
               placeholder="0"
               min="0"
-              step="100"
             />
+            <label className="flex items-center gap-2 mt-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={data.isNegotiable}
+                onChange={(e) => updateField("isNegotiable", e.target.checked)}
+                className="w-4 h-4 rounded border-surface-border bg-surface-dark text-gold accent-gold cursor-pointer"
+              />
+              <span className="text-sm text-text-secondary">Price is negotiable</span>
+            </label>
           </Field>
 
           <Field label="Mileage (km)">

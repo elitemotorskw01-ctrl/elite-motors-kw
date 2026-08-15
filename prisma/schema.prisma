@@ -26,6 +26,7 @@ model Vehicle {
   description   String
   features      String
   images        String
+  isNegotiable  Boolean  @default(false)
   isFeatured    Boolean  @default(false)
   isSold        Boolean  @default(false)
   status        String   @default("active")
