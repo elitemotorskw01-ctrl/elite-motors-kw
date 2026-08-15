@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import {
@@ -36,7 +36,15 @@ const TABS: { key: Tab; label: string }[] = [
   { key: "featured", label: "Featured" },
 ];
 
-export default function ManageVehiclesPage() {
+export default function ManageVehiclesPageWrapper() {
+  return (
+    <Suspense>
+      <ManageVehiclesPage />
+    </Suspense>
+  );
+}
+
+function ManageVehiclesPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);

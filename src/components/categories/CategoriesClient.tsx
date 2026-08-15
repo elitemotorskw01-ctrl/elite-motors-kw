@@ -9,7 +9,6 @@ import {
   Crown,
   Gauge,
   Zap,
-  Gem,
   Wind,
   CircleDot,
   Sparkles,

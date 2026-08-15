@@ -69,7 +69,7 @@ export default async function VehicleDetailPage({ params }: Props) {
   return (
     <>
       <VehicleJsonLd vehicle={vehicle} />
-      <VehicleDetailClient vehicle={vehicle} similarVehicles={similarVehicles as any} />
+      <VehicleDetailClient vehicle={vehicle} similarVehicles={similarVehicles as unknown as Parameters<typeof VehicleDetailClient>[0]["similarVehicles"]} />
     </>
   );
 }

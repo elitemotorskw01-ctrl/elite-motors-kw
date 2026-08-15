@@ -78,7 +78,7 @@ export default async function Home() {
     <>
       <HeroImageBg />
       <TrustBadges />
-      <FeaturedVehicles vehicles={featuredVehicles as any} />
+      <FeaturedVehicles vehicles={featuredVehicles as unknown as Parameters<typeof FeaturedVehicles>[0]["vehicles"]} />
       <BrowseByCategory counts={categoryMap} />
       <SellCTA />
       <WhyChooseUs />

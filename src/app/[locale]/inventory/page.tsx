@@ -103,7 +103,7 @@ export default async function InventoryPage({ searchParams }: Props) {
 
   return (
     <InventoryClient
-      vehicles={vehicles as any}
+      vehicles={vehicles as unknown as Parameters<typeof InventoryClient>[0]["vehicles"]}
       totalCount={totalCount}
       totalPages={totalPages}
       currentPage={page}
