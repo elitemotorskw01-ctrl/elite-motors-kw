@@ -1,110 +1,67 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 
 const CATEGORY_KEYS = ["Sedan", "SUV", "Sport", "Luxury", "Pickup", "Bikes"] as const;
 
-const HERO_SLIDES = [
-  { src: "/hero-car.jpg", alt: "Land Cruiser GR Sport" },
-  { src: "/sell-cta-car.jpg", alt: "Chevrolet Camaro ZL1" },
-];
+const BRAND_OPTIONS = [
+  "Toyota", "Nissan", "Chevrolet", "Ford", "BMW", "Mercedes-Benz",
+  "Porsche", "Lexus", "Land Rover", "Dodge", "Audi", "Bentley",
+] as const;
 
-const SLIDE_INTERVAL = 5000;
+const PRICE_RANGES = [
+  { value: "0-5000", label: "Under 5,000" },
+  { value: "5000-15000", label: "5,000 - 15,000" },
+  { value: "15000-30000", label: "15,000 - 30,000" },
+  { value: "30000-60000", label: "30,000 - 60,000" },
+  { value: "60000-", label: "60,000+" },
+] as const;
 
 export default function HeroImageBg() {
   const [query, setQuery] = useState("");
-  const [current, setCurrent] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [brand, setBrand] = useState("");
+  const [category, setCategory] = useState("");
+  const [priceRange, setPriceRange] = useState("");
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("hero");
   const tCat = useTranslations("categories");
 
-  const goTo = useCallback((index: number) => {
-    setCurrent(index);
-    setProgress(0);
-  }, []);
-
-  useEffect(() => {
-    let raf: number;
-    let start = Date.now();
-
-    function tick() {
-      const elapsed = Date.now() - start;
-      const pct = Math.min(elapsed / SLIDE_INTERVAL, 1);
-      setProgress(pct);
-      if (elapsed >= SLIDE_INTERVAL) {
-        setCurrent((prev) => (prev + 1) % HERO_SLIDES.length);
-        start = Date.now();
-        setProgress(0);
-      }
-      raf = requestAnimationFrame(tick);
-    }
-
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      router.push(`/${locale}/inventory?search=${encodeURIComponent(query.trim())}`);
+    const params = new URLSearchParams();
+    if (query.trim()) params.set("search", query.trim());
+    if (brand) params.set("brand", brand);
+    if (category) params.set("category", category);
+    if (priceRange) {
+      const [min, max] = priceRange.split("-");
+      if (min) params.set("minPrice", min);
+      if (max) params.set("maxPrice", max);
     }
+    router.push(`/${locale}/inventory${params.toString() ? `?${params}` : ""}`);
   };
 
   return (
     <section className="bg-[#0A0A0A]">
-      <div className="relative w-full aspect-video max-h-[80vh]">
-        {HERO_SLIDES.map((slide, i) => (
-          <div
-            key={slide.src}
-            className="absolute inset-0 transition-opacity duration-1000"
-            style={{ opacity: current === i ? 1 : 0 }}
-          >
-            <Image
-              src={slide.src}
-              alt={slide.alt}
-              fill
-              className="object-contain"
-              priority={i === 0}
-              quality={90}
-              sizes="100vw"
-            />
-          </div>
-        ))}
+      <div className="relative w-full aspect-[3/4] sm:aspect-[4/3] md:aspect-video max-h-[80vh]">
+        <Image
+          src="/hero-car.jpg"
+          alt=""
+          fill
+          className="object-contain"
+          priority
+          quality={90}
+          sizes="100vw"
+        />
         <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
         <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#0A0A0A] to-transparent" />
         <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#0A0A0A] to-transparent" />
-
-        {/* Dots */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
-          {HERO_SLIDES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              aria-label={`Slide ${i + 1}`}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                current === i
-                  ? "w-8 bg-gold"
-                  : "w-2 bg-white/30 hover:bg-white/50"
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Progress bar */}
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 z-10">
-          <div
-            className="h-full bg-gold/60"
-            style={{ width: `${progress * 100}%`, transition: "width 100ms linear" }}
-          />
-        </div>
       </div>
 
-      <div className="relative mx-auto w-[600px] h-[150px] -mt-8 bg-gold/10 rounded-full blur-[80px]" />
+      <div className="relative mx-auto w-[300px] sm:w-[600px] h-[100px] sm:h-[150px] -mt-8 bg-gold/10 rounded-full blur-[80px]" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 text-center -mt-6 pb-16">
         <p className="text-gold uppercase tracking-[0.3em] text-sm font-medium mb-4">
@@ -145,6 +102,39 @@ export default function HeroImageBg() {
             {t("searchButton")}
           </button>
         </form>
+
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-xl mx-auto mb-8">
+          <select
+            value={brand}
+            onChange={(e) => setBrand(e.target.value)}
+            className="flex-1 min-w-[100px] px-3 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold/50 appearance-none cursor-pointer"
+          >
+            <option value="" className="bg-[#1a1a1a]">{t("brandFilter")}</option>
+            {BRAND_OPTIONS.map((b) => (
+              <option key={b} value={b} className="bg-[#1a1a1a]">{b}</option>
+            ))}
+          </select>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="flex-1 min-w-[100px] px-3 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold/50 appearance-none cursor-pointer"
+          >
+            <option value="" className="bg-[#1a1a1a]">{t("categoryFilter")}</option>
+            {CATEGORY_KEYS.map((cat) => (
+              <option key={cat} value={cat} className="bg-[#1a1a1a]">{tCat(cat)}</option>
+            ))}
+          </select>
+          <select
+            value={priceRange}
+            onChange={(e) => setPriceRange(e.target.value)}
+            className="flex-1 min-w-[100px] px-3 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-gold/50 appearance-none cursor-pointer"
+          >
+            <option value="" className="bg-[#1a1a1a]">{t("priceFilter")}</option>
+            {PRICE_RANGES.map((p) => (
+              <option key={p.value} value={p.value} className="bg-[#1a1a1a]">{p.label} KWD</option>
+            ))}
+          </select>
+        </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           {CATEGORY_KEYS.map((cat) => (

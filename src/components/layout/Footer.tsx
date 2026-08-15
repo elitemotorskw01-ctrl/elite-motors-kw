@@ -32,6 +32,7 @@ export default function Footer() {
     { href: "/", label: t("home") },
     { href: "/inventory", label: t("inventory") },
     { href: "/sell", label: t("sell") },
+    { href: "/about", label: t("about") },
     { href: "/contact", label: t("contact") },
   ];
 
@@ -44,9 +45,9 @@ export default function Footer() {
             <Image
               src="/logo.svg"
               alt="Elite Motors KW"
-              width={120}
-              height={45}
-              className="h-10 w-auto"
+              width={140}
+              height={36}
+              className="h-8 w-auto"
             />
             <p className="text-text-secondary text-sm leading-relaxed max-w-xs">
               {tFooter("description")}
@@ -145,9 +146,20 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-surface-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-          <p className="text-text-secondary text-xs text-center">
-            {tFooter("rights")}
-          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+            <p className="text-text-secondary text-xs">
+              &copy; {new Date().getFullYear()} Elite Motors KW. {tFooter("allRightsReserved")}
+            </p>
+            <div className="flex items-center gap-3 text-xs">
+              <Link href="/terms" className="text-text-secondary hover:text-gold transition-colors">
+                {tFooter("terms")}
+              </Link>
+              <span className="text-text-secondary/40">|</span>
+              <Link href="/privacy" className="text-text-secondary hover:text-gold transition-colors">
+                {tFooter("privacy")}
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

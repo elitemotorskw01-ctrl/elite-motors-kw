@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import { getTranslations } from "next-intl/server";
 import HeroImageBg from "@/components/home/HeroImageBg";
+import TrustBadges from "@/components/home/TrustBadges";
 import FeaturedVehicles from "@/components/home/FeaturedVehicles";
 import BrowseByCategory from "@/components/home/BrowseByCategory";
 import SellCTA from "@/components/home/SellCTA";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
+import Reviews from "@/components/home/Reviews";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";
 
@@ -76,10 +77,12 @@ export default async function Home() {
   return (
     <>
       <HeroImageBg />
+      <TrustBadges />
       <FeaturedVehicles vehicles={featuredVehicles as any} />
       <BrowseByCategory counts={categoryMap} />
       <SellCTA />
       <WhyChooseUs />
+      <Reviews />
     </>
   );
 }

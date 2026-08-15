@@ -33,6 +33,7 @@ export default function Header() {
     { href: "/inventory", label: t("inventory") },
     { href: "/categories", label: t("categories") },
     { href: "/sell", label: t("sell") },
+    { href: "/about", label: t("about") },
     { href: "/contact", label: t("contact") },
   ];
 
@@ -51,9 +52,9 @@ export default function Header() {
             <Image
               src="/logo.svg"
               alt="Elite Motors KW"
-              width={120}
-              height={45}
-              className="h-10 md:h-[45px] w-auto"
+              width={140}
+              height={36}
+              className="h-8 md:h-9 w-auto"
               priority
             />
           </Link>
