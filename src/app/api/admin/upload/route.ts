@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
 import sharp from "sharp";
@@ -18,7 +18,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Vercel's filesystem is read-only, so writing into public/uploads fails
+  // there. Until uploads move to blob storage, return a clear message rather
+  // than a generic 500 so the admin knows to paste image URLs instead.
+  if (process.env.VERCEL) {
+    return NextResponse.json(
+      {
+        error:
+          "File uploads aren't available on the live site yet. Use the \"Add URL\" option to link images instead.",
+      },
+      { status: 501 }
+    );
+  }
+
   try {
+    // public/uploads is gitignored, so it may not exist on a fresh clone.
+    await mkdir(UPLOAD_DIR, { recursive: true });
+
     const formData = await request.formData();
     const files = formData.getAll("images") as File[];
 
