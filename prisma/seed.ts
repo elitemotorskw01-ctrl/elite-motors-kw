@@ -14,6 +14,22 @@ function imgs(label: string): string {
 }
 
 async function main() {
+  // This seed wipes every vehicle and admin, then inserts demo listings.
+  // That is fine for a local dev.db and catastrophic against the live
+  // database, so refuse to run unless the target is explicitly local.
+  const url = process.env.DATABASE_URL || "";
+  const isLocal = url.includes("localhost") || url.includes("127.0.0.1") || url.startsWith("file:");
+
+  if (!isLocal) {
+    console.error(
+      "Refusing to seed: DATABASE_URL does not look like a local database.\n" +
+        "This script deletes all vehicles and admins before inserting demo data.\n\n" +
+        "To create an admin account on a real database, use:\n" +
+        '  ADMIN_PASSWORD="..." npm run db:admin'
+    );
+    process.exit(1);
+  }
+
   await prisma.vehicle.deleteMany();
   await prisma.admin.deleteMany();
 
