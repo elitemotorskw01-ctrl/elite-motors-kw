@@ -24,6 +24,14 @@ function InstagramIcon({ size = 20 }: { size?: number }) {
   );
 }
 
+function TikTokIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 0 1 0-5.18c.27 0 .52.04.76.12V9.68a5.71 5.71 0 0 0-.76-.05 5.69 5.69 0 1 0 5.69 5.69V9.01a7.35 7.35 0 0 0 4.29 1.37V7.3a4.29 4.29 0 0 1-3.24-1.48z" />
+    </svg>
+  );
+}
+
 export default function Footer() {
   const t = useTranslations("nav");
   const tFooter = useTranslations("footer");
@@ -32,6 +40,7 @@ export default function Footer() {
     { href: "/", label: t("home") },
     { href: "/inventory", label: t("inventory") },
     { href: "/sell", label: t("sell") },
+    { href: "/socials", label: t("socials") },
     { href: "/about", label: t("about") },
     { href: "/contact", label: t("contact") },
   ];
@@ -54,6 +63,15 @@ export default function Footer() {
             </p>
             {/* Social Icons */}
             <div className="flex items-center gap-4 pt-2">
+              <a
+                href="https://www.tiktok.com/@elitemotors.kw"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-text-secondary hover:text-gold transition-colors"
+                aria-label="TikTok"
+              >
+                <TikTokIcon size={20} />
+              </a>
               <a
                 href="https://www.instagram.com/elitemotors.kw"
                 target="_blank"

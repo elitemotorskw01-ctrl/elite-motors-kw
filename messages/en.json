@@ -6,7 +6,21 @@
     "sell": "Sell Your Vehicle",
     "about": "About Us",
     "contact": "Contact Us",
+    "socials": "Our Socials",
     "favorites": "Favorites"
+  },
+  "socials": {
+    "title_1": "Our",
+    "title_2": "Socials",
+    "subtitle": "Follow us for the latest arrivals, walkarounds, and deals.",
+    "tiktokTitle": "TikTok",
+    "tiktokDesc": "Watch our latest vehicle videos and walkarounds",
+    "tiktokBtn": "Open TikTok",
+    "instagramTitle": "Instagram",
+    "instagramDesc": "See our newest listings and send us a DM",
+    "instagramBtn": "Open Instagram",
+    "followTitle": "Stay Updated",
+    "followDesc": "New vehicles are posted to our socials first. Follow along so you never miss a listing."
   },
   "lang": {
     "toggle": "عربي",

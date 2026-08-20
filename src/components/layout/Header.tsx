@@ -33,6 +33,7 @@ export default function Header() {
     { href: "/inventory", label: t("inventory") },
     { href: "/categories", label: t("categories") },
     { href: "/sell", label: t("sell") },
+    { href: "/socials", label: t("socials") },
     { href: "/about", label: t("about") },
     { href: "/contact", label: t("contact") },
   ];
