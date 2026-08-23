@@ -18,7 +18,12 @@ function getSecret(): string {
   return "development-only-secret-do-not-use-in-production";
 }
 
-const JWT_SECRET = new TextEncoder().encode(getSecret());
+// Resolved per call, not at module load: Next.js imports this file while
+// collecting page data during the build, and throwing there would fail the
+// build rather than the request that actually needs a secret.
+function secretKey(): Uint8Array {
+  return new TextEncoder().encode(getSecret());
+}
 
 const COOKIE_NAME = "admin-token";
 
@@ -27,12 +32,12 @@ export async function createToken(adminId: string, username: string) {
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("24h")
-    .sign(JWT_SECRET);
+    .sign(secretKey());
 }
 
 export async function verifyToken(token: string) {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(token, secretKey());
     return payload as { adminId: string; username: string };
   } catch {
     return null;
