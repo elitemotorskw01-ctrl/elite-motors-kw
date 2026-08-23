@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local-only prisma schema (sqlite) — production uses postgres
+prisma/schema.local.prisma

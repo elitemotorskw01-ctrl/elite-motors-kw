@@ -2,9 +2,23 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "elite-motors-kw-secret-key-change-in-production"
-);
+// Never fall back to a hardcoded secret: this file is public, so a default
+// would let anyone forge an admin session. Development gets a throwaway
+// value; production must supply its own.
+function getSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (secret) return secret;
+
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      "JWT_SECRET is not set. Refusing to sign admin tokens with a default secret."
+    );
+  }
+
+  return "development-only-secret-do-not-use-in-production";
+}
+
+const JWT_SECRET = new TextEncoder().encode(getSecret());
 
 const COOKIE_NAME = "admin-token";
 

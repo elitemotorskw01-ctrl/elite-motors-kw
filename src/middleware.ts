@@ -19,9 +19,14 @@ export default async function middleware(request: NextRequest) {
 
     try {
       const { jwtVerify } = await import("jose");
+      // Matches getSecret() in lib/auth.ts — no public fallback in production,
+      // so an unset JWT_SECRET fails the verify and redirects to login.
+      const configured = process.env.JWT_SECRET;
+      if (!configured && process.env.NODE_ENV === "production") {
+        throw new Error("JWT_SECRET is not set");
+      }
       const secret = new TextEncoder().encode(
-        process.env.JWT_SECRET ||
-          "elite-motors-kw-secret-key-change-in-production"
+        configured || "development-only-secret-do-not-use-in-production"
       );
       await jwtVerify(token, secret);
       return NextResponse.next();
